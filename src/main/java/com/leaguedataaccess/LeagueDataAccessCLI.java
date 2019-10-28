@@ -110,8 +110,8 @@ public class LeagueDataAccessCLI {
 					selectedOwnerTwo = listOfAllOwnersWithoutOwnerOne.get(i);
 				} 
 			}
-			System.out.println(selectedOwner.getFirstName() + "'s # of Wins vs " + selectedOwnerTwo.getFirstName() + ": " + gameDAO.getNumberOfWinsVsSelectedOwner(selectedOwner, selectedOwnerTwo));
-			System.out.println(selectedOwnerTwo.getFirstName() + "'s # of Wins vs " + selectedOwner.getFirstName() + ": " + gameDAO.getNumberOfWinsVsSelectedOwner(selectedOwnerTwo, selectedOwner));
+			System.out.println(selectedOwner.getFirstName() + "'s Wins vs " + selectedOwnerTwo.getFirstName() + " all time: " + gameDAO.getNumberOfWinsVsSelectedOwner(selectedOwner, selectedOwnerTwo));
+			System.out.println(selectedOwnerTwo.getFirstName() + "'s Wins vs " + selectedOwner.getFirstName() + " all time: " + gameDAO.getNumberOfWinsVsSelectedOwner(selectedOwnerTwo, selectedOwner));
 			
 		} else if (choice.equals(MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN)) {
 			displayOwnersAsMenu();
