@@ -8,8 +8,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.leaguedataaccess.Owner;
+import com.leaguedataaccess.OwnerDAO;
 
-public class JDBCOwnerDAO {
+public class JDBCOwnerDAO implements OwnerDAO {
 
 	private JdbcTemplate jdbcTemplate;
 	

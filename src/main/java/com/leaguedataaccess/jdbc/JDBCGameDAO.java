@@ -4,9 +4,10 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import com.leaguedataaccess.GameDAO;
 import com.leaguedataaccess.Owner;
 
-public class JDBCGameDAO {
+public class JDBCGameDAO implements GameDAO {
 
 private JdbcTemplate jdbcTemplate;
 	
