@@ -68,19 +68,12 @@ public class LeagueDataAccessCLI {
 		System.out.println("Please select an owner:");
 		List<Owner> allOwners = ownerDAO.getAllOwners();
 		Owner selectedOwner = new Owner();
-		Object[] ownerList = new Object[allOwners.size()];
-		for (int i = 0; i < allOwners.size(); i++) {
-			ownerList[i] = allOwners.get(i).getFullName();
-		}
-		String choice = (String) menu.getChoiceFromOptions(ownerList);
-
-		for (int i = 0; i < allOwners.size(); i++) {
-			if (choice.equals(ownerList[i])) {
-				selectedOwner = allOwners.get(i);
-			} 
-		}
+		Object[] ownerList = allOwners.toArray(new Object[allOwners.size()]);
 		
-		handleOwnerSelection(selectedOwner);
+		Object choice = menu.getChoiceFromOptions(ownerList);
+
+		handleOwnerSelection((Owner)choice);
+	
 	}
 	
 	public void handleOwnerSelection(Owner selectedOwner) {
