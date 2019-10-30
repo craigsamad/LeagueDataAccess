@@ -67,7 +67,6 @@ public class LeagueDataAccessCLI {
 		printHeading("Owners Menu");
 		System.out.println("Please select an owner:");
 		List<Owner> allOwners = ownerDAO.getAllOwners();
-		Owner selectedOwner = new Owner();
 		Object[] ownerList = allOwners.toArray(new Object[allOwners.size()]);
 		
 		Object choice = menu.getChoiceFromOptions(ownerList);
@@ -82,7 +81,7 @@ public class LeagueDataAccessCLI {
 			System.out.println("You selected: " + selectedOwner.getFullName());
 			System.out.println();
 			System.out.println("Select a Command");
-			String choice = (String) menu.getChoiceFromOptions(OWNER_MENU);
+			Object choice = menu.getChoiceFromOptions(OWNER_MENU);
 			if (choice.equals(OWNER_MENU_SHOW_TOTAL_STATS)) {
 
 			} else if (choice.equals(COMPARE_TO_ANOTHER_OWNER)) {
@@ -90,23 +89,15 @@ public class LeagueDataAccessCLI {
 				System.out.println();
 				List<Owner> listOfAllOwnersWithoutOwnerOne = ownerDAO.getAllOwners();
 				listOfAllOwnersWithoutOwnerOne.remove(selectedOwner.getOwnerId() - 1);
-				Owner selectedOwnerTwo = new Owner();
-				String[] ownerListTwo = new String[listOfAllOwnersWithoutOwnerOne.size()];
-				for (int i = 0; i < listOfAllOwnersWithoutOwnerOne.size(); i++) {
-					ownerListTwo[i] = listOfAllOwnersWithoutOwnerOne.get(i).getFullName();
-				}
+				Object[] ownerListTwo = listOfAllOwnersWithoutOwnerOne.toArray(new Object[listOfAllOwnersWithoutOwnerOne.size()]);
 
-				choice = (String) menu.getChoiceFromOptions(ownerListTwo);
+				choice = menu.getChoiceFromOptions(ownerListTwo);
 
-				for (int i = 0; i < listOfAllOwnersWithoutOwnerOne.size(); i++) {
-					if (choice.equals(ownerListTwo[i])) {
-						selectedOwnerTwo = listOfAllOwnersWithoutOwnerOne.get(i);
-					}
-				}
-				System.out.println(selectedOwner.getFirstName() + "'s Wins vs " + selectedOwnerTwo.getFirstName()
-						+ " all time: " + gameDAO.getNumberOfWinsVsSelectedOwner(selectedOwner, selectedOwnerTwo));
-				System.out.println(selectedOwnerTwo.getFirstName() + "'s Wins vs " + selectedOwner.getFirstName()
-						+ " all time: " + gameDAO.getNumberOfWinsVsSelectedOwner(selectedOwnerTwo, selectedOwner));
+				System.out.printf("%-20s %-10s %s\n", "", selectedOwner.getFirstName(), ((Owner) choice).getFirstName());
+				System.out.printf("%-20s %-10s %s\n", "Wins: ", gameDAO.getNumberOfWinsVsSelectedOwner(selectedOwner, (Owner) choice), 
+															    gameDAO.getNumberOfWinsVsSelectedOwner((Owner) choice, selectedOwner));
+				System.out.printf("%-20s %-10s %s\n", "Score: ", gameDAO.getTotalScoreVsSelectedOwner(selectedOwner, (Owner) choice), 
+						 										 gameDAO.getTotalScoreVsSelectedOwner((Owner) choice, selectedOwner));
 				
 				stayInOwnerMenu = false; //remove later
 

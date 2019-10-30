@@ -28,4 +28,19 @@ private JdbcTemplate jdbcTemplate;
 		}
 		return numOfWins;
 	}
+	
+	public double getTotalScoreVsSelectedOwner(Owner one, Owner two) {
+		double totalScore = 0;
+		String sql = "select sum(score) "
+				+ "from game "
+				+ "where owner_id = ? and opponent_id = ?";
+		
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, one.getOwnerId(), two.getOwnerId());
+		
+		if (results.next()) {
+			totalScore += results.getDouble("sum");
+		}
+		
+		return totalScore;
+	}
 }
