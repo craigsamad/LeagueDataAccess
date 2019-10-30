@@ -99,7 +99,7 @@ public class LeagueDataAccessCLI {
 				System.out.printf("%-20s %-10s %s\n", "Score: ", gameDAO.getTotalScoreVsSelectedOwner(selectedOwner, (Owner) choice), 
 						 										 gameDAO.getTotalScoreVsSelectedOwner((Owner) choice, selectedOwner));
 				
-				stayInOwnerMenu = false; //remove later
+				stayInOwnerMenu = false; 
 
 			} else if (choice.equals(MENU_OPTION_RETURN_TO_MAIN)) {
 				stayInOwnerMenu = false;
