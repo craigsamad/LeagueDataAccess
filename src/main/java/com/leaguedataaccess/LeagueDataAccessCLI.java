@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import com.leaguedataaccess.jdbc.JDBCGameDAO;
+import com.leaguedataaccess.jdbc.JDBCStatsDAO;
 import com.leaguedataaccess.jdbc.JDBCOwnerDAO;
 import com.leaguedataaccess.view.Menu;
 
@@ -24,7 +24,7 @@ public class LeagueDataAccessCLI {
 
 	private Menu menu;
 	private OwnerDAO ownerDAO;
-	private GameDAO gameDAO;
+	private StatsDAO statsDao;
 	
 	public LeagueDataAccessCLI() {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -34,7 +34,7 @@ public class LeagueDataAccessCLI {
 
 		this.menu = new Menu(System.in, System.out);
 		ownerDAO = new JDBCOwnerDAO(dataSource);
-		gameDAO = new JDBCGameDAO(dataSource);
+		statsDao = new JDBCStatsDAO(dataSource);
 	}
 
 	public static void main(String[] args) {
@@ -83,6 +83,31 @@ public class LeagueDataAccessCLI {
 			System.out.println("Select a Command");
 			Object choice = menu.getChoiceFromOptions(OWNER_MENU);
 			if (choice.equals(OWNER_MENU_SHOW_TOTAL_STATS)) {
+				
+				OwnerStats totalOwnerStats = statsDao.getTotalStatsForOneOwner(selectedOwner);
+				
+				System.out.println();
+				System.out.println("Total Stats For " + selectedOwner.getFirstName() + ":");
+				System.out.println();
+				System.out.println("Regular Season Stats");
+				String record = Integer.toString(totalOwnerStats.getRegWins()) + "-" + Integer.toString(totalOwnerStats.getRegLosses());
+				System.out.printf("%-20s %-10s\n", "Record: ", record);
+				System.out.printf("%-20s %-10.2f\n", "Points Scored: ", totalOwnerStats.getRegScoreFor());
+				System.out.printf("%-20s %-10.2f\n", "Points Against: ", totalOwnerStats.getRegScoreAgainst());
+				System.out.println();
+				System.out.println("Post Season Stats");
+				record = Integer.toString(totalOwnerStats.getPostWins()) + "-" + Integer.toString(totalOwnerStats.getPostLosses());
+				System.out.printf("%-20s %-10s\n", "Record: ", record);
+				System.out.printf("%-20s %-10.2f\n", "Points Scored: ", totalOwnerStats.getPostScoreFor());
+				System.out.printf("%-20s %-10.2f\n", "Points Against: ", totalOwnerStats.getPostScoreAgainst());
+				System.out.println();
+				System.out.println("Total Stats");
+				record = Integer.toString((totalOwnerStats.getRegWins() + totalOwnerStats.getPostWins())) + "-" + Integer.toString((totalOwnerStats.getRegLosses() + totalOwnerStats.getPostLosses()));
+				System.out.printf("%-20s %-10s\n", "Record: ", record);
+				System.out.printf("%-20s %-10.2f\n", "Points Scored: ", (totalOwnerStats.getRegScoreFor() + totalOwnerStats.getPostScoreFor()));
+				System.out.printf("%-20s %-10.2f\n", "Points Against: ", (totalOwnerStats.getRegScoreAgainst() + totalOwnerStats.getPostScoreAgainst()));
+				
+				stayInOwnerMenu = false;
 
 			} else if (choice.equals(COMPARE_TO_ANOTHER_OWNER)) {
 				System.out.println("Select an owner to compare " + selectedOwner.getFirstName() + " to.");
@@ -92,12 +117,24 @@ public class LeagueDataAccessCLI {
 				Object[] ownerListTwo = listOfAllOwnersWithoutOwnerOne.toArray(new Object[listOfAllOwnersWithoutOwnerOne.size()]);
 
 				choice = menu.getChoiceFromOptions(ownerListTwo);
-
+				
+				OwnerStats headToHeadResults = statsDao.getHeadToHeadStats(selectedOwner, (Owner) choice);
+				
 				System.out.printf("%-20s %-10s %s\n", "", selectedOwner.getFirstName(), ((Owner) choice).getFirstName());
-				System.out.printf("%-20s %-10s %s\n", "Wins: ", gameDAO.getNumberOfWinsVsSelectedOwner(selectedOwner, (Owner) choice), 
-															    gameDAO.getNumberOfWinsVsSelectedOwner((Owner) choice, selectedOwner));
-				System.out.printf("%-20s %-10s %s\n", "Score: ", gameDAO.getTotalScoreVsSelectedOwner(selectedOwner, (Owner) choice), 
-						 										 gameDAO.getTotalScoreVsSelectedOwner((Owner) choice, selectedOwner));
+				System.out.println("Regular Season Stats");
+				System.out.println("Games Played: " + (headToHeadResults.getRegWins() + headToHeadResults.getRegLosses()));
+				System.out.printf("%-20s %-10s %s\n", "Wins: ", headToHeadResults.getRegWins(), headToHeadResults.getRegLosses());
+				System.out.printf("%-20s %-10.2f %.2f\n", "Total Score: ", headToHeadResults.getRegScoreFor(), headToHeadResults.getRegScoreAgainst());
+				System.out.println();
+				System.out.println("Post Season Stats");
+				System.out.println("Games Played: " + (headToHeadResults.getPostWins() + headToHeadResults.getPostLosses()));
+				System.out.printf("%-20s %-10s %s\n", "Wins: ", headToHeadResults.getPostWins(), headToHeadResults.getPostLosses());
+				System.out.printf("%-20s %-10.2f %.2f\n", "Total Score: ", headToHeadResults.getPostScoreFor(), headToHeadResults.getPostScoreAgainst());
+				System.out.println();
+				System.out.println("Total Stats");
+				System.out.println("Games Played: " + ((headToHeadResults.getRegWins() + headToHeadResults.getPostWins()) + (headToHeadResults.getRegLosses() + headToHeadResults.getPostLosses())));
+				System.out.printf("%-20s %-10s %s\n", "Wins: ", headToHeadResults.getRegWins() + headToHeadResults.getPostWins(), headToHeadResults.getRegLosses() + headToHeadResults.getPostLosses());
+				System.out.printf("%-20s %-10.2f %.2f\n", "Total Score: ", headToHeadResults.getRegScoreFor() + headToHeadResults.getPostScoreFor(), headToHeadResults.getRegScoreAgainst() + headToHeadResults.getPostScoreAgainst());
 				
 				stayInOwnerMenu = false; 
 
