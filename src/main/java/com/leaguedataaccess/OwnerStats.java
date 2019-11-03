@@ -11,6 +11,8 @@ public class OwnerStats {
 	private int postLosses;
 	private double postScoreFor;
 	private double postScoreAgainst;
+	private double highestRegScore;
+	private double lowestRegScore;
 	
 	public OwnerStats (int regWins, int regLosses, int regTies, double regScoreFor, double regScoreAgainst, int postWins, int postLosses, double postScoreFor, double postScoreAgainst) {
 		this.setRegWins(regWins);
@@ -34,6 +36,8 @@ public class OwnerStats {
 		postLosses = 0;
 		postScoreFor = 0;
 		postScoreAgainst = 0;
+		highestRegScore = 0;
+		lowestRegScore = 0;
 	}
 
 	public int getRegWins() {
@@ -106,5 +110,21 @@ public class OwnerStats {
 
 	public void setPostScoreAgainst(double postScoreAgainst) {
 		this.postScoreAgainst = this.postScoreAgainst + postScoreAgainst;
+	}
+
+	public double getHighestRegScore() {
+		return highestRegScore;
+	}
+
+	public void setHighestRegScore(double highestRegScore) {
+		this.highestRegScore = highestRegScore;
+	}
+
+	public double getLowestRegScore() {
+		return lowestRegScore;
+	}
+
+	public void setLowestRegScore(double lowestRegScore) {
+		this.lowestRegScore = lowestRegScore;
 	}
 }

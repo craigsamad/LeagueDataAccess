@@ -73,6 +73,12 @@ private JdbcTemplate jdbcTemplate;
 				stats.setRegWins(results.getInt("reg_wins"));
 				stats.setRegLosses(results.getInt("reg_losses"));
 				stats.setRegTies(results.getInt("reg_ties"));
+				if (results.getDouble("owner_one_score") > stats.getHighestRegScore() || stats.getHighestRegScore() == 0) {
+					stats.setHighestRegScore(results.getDouble("owner_one_score"));
+				}
+				if (results.getDouble("owner_one_score") < stats.getLowestRegScore() || stats.getLowestRegScore() == 0) {
+					stats.setLowestRegScore(results.getDouble("owner_one_score"));
+				}
 			}
 			else if (results.getInt("type") == 2 || results.getInt("type") == 4) {
 				stats.setPostScoreFor(results.getDouble("owner_one_score"));
