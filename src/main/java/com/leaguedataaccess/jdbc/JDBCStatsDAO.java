@@ -90,7 +90,7 @@ private JdbcTemplate jdbcTemplate;
 		return stats;
 	}
 	
-	public OwnerStats getRecordForOneOwnerOneSeason(Owner owner, int season) {
+	public OwnerStats getRegSeasonRecordForOneOwnerOneSeason(Owner owner, int season) {
 		OwnerStats record = new OwnerStats();
 		String sql = "SELECT SUM(CASE WHEN os.score > os2.score AND type = 1 THEN 1 ELSE 0 END) AS wins, "
 			              + "SUM(CASE WHEN os.score < os2.score AND type = 1 THEN 1 ELSE 0 END) AS losses, "

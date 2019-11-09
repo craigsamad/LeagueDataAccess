@@ -54,13 +54,32 @@ public class LeagueDataAccessCLI {
 			if (choice.equals(MAIN_MENU_START_SEARCH_BY_OWNER)) {
 				displayOwnersAsMenu();
 			} else if (choice.equals(MAIN_MENU_START_SEARCH_BY_SEASON)) {
-
+				displaySeasonsAsMenu();				
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
 				System.out.println("Quitting...");
 				keepRunning = false;
 				System.exit(0);
 			} 
 		}
+	}
+
+	private void handleSeasonSelection(int selectedSeason) {
+		List<Owner> allOwners = ownerDAO.getOwnersBySeason(selectedSeason);
+		for (Owner owner : allOwners) {
+			OwnerStats stats = statsDao.getRegSeasonRecordForOneOwnerOneSeason(owner, selectedSeason);
+			System.out.println(owner.getFullName() + ": " + stats.getRegWins() + "-" + stats.getRegLosses());
+		}
+	}
+
+	private void displaySeasonsAsMenu() {
+		printHeading("Season Menu");
+		System.out.println("Please select a season:");
+		List<Integer> allSeasons = ownerDAO.getAllSeasons();
+		Object[] seasonList = allSeasons.toArray(new Object[allSeasons.size()]);
+		
+		Object choice = menu.getChoiceFromOptions(seasonList);
+		
+		handleSeasonSelection((Integer)choice);
 	}
 	
 	private void displayOwnersAsMenu() {
@@ -124,12 +143,6 @@ public class LeagueDataAccessCLI {
 				System.out.printf("%-20s %-10.2f\n", "Points Scored: ", (regScoreFor + postScoreFor));
 				System.out.printf("%-20s %-10.2f\n", "Points Against: ", (regScoreAgainst + postScoreAgainst));
 				System.out.printf("%-20s %-10.2f\n", "Points Per Game: ", avgPointsPerGame);
-				
-				OwnerStats test = statsDao.getRecordForOneOwnerOneSeason(selectedOwner, 2011);
-				System.out.println();
-				System.out.println(test.getRegWins());
-				System.out.println(test.getRegLosses());
-				System.out.println(test.getRegTies());
 				
 				stayInOwnerMenu = false;
 

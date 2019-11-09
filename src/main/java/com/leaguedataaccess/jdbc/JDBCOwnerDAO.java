@@ -33,6 +33,37 @@ public class JDBCOwnerDAO implements OwnerDAO {
 		
 		return listOfAllOwners;
 	}
+	
+	public List<Owner> getOwnersBySeason(int season) {
+		List<Owner> ownerList = new LinkedList<Owner>();
+		String sql = "SELECT o.owner_id, o.first_name, o.last_name FROM owner o "
+				   + "WHERE o.owner_id in (SELECT DISTINCT os.owner_id FROM owner_score os "
+				   + "JOIN game g ON os.game_id = g.game_id	WHERE SEASON = ?)";
+		
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, season); 
+		
+		while(results.next()) {
+			Owner selectedOwner = mapRowsToOwner(results);
+			ownerList.add(selectedOwner);
+		}
+		
+		return ownerList;
+	}
+	
+	public List<Integer> getAllSeasons() {
+		List<Integer> seasonList = new LinkedList<Integer>();
+		String sql = "SELECT DISTINCT season " 
+					+ "FROM game "
+					+ "ORDER BY season";
+		
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql); 
+		
+		while(results.next()) {
+			seasonList.add(results.getInt("season"));
+		}
+		
+		return seasonList;		
+	}
 
 	private Owner mapRowsToOwner(SqlRowSet results) {
 		Owner selectedOwner = new Owner();
