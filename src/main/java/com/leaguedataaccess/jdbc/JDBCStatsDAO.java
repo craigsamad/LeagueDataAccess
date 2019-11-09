@@ -90,67 +90,24 @@ private JdbcTemplate jdbcTemplate;
 		return stats;
 	}
 	
-	public int getNumberOfWinsVsSelectedOwnerRegularSeason(Owner one, Owner two) {
-		int numOfWins = 0;
-		String sql = "select count(*) "
-				+ "from owner_score a "
-				+ "join owner_score b on a.game_id = b.game_id "
-				+ "join game on game.game_id = a.game_id "
-				+ "where a.owner_id = ? and b.owner_id = ? and a.score > b.score and type = 1";
+	public OwnerStats getRecordForOneOwnerOneSeason(Owner owner, int season) {
+		OwnerStats record = new OwnerStats();
+		String sql = "SELECT SUM(CASE WHEN os.score > os2.score AND type = 1 THEN 1 ELSE 0 END) AS wins, "
+			              + "SUM(CASE WHEN os.score < os2.score AND type = 1 THEN 1 ELSE 0 END) AS losses, "
+			              + "SUM(CASE WHEN os.score = os2.score AND type = 1 THEN 1 ELSE 0 END) AS ties "
+			              + "FROM owner_score os "
+			              + "JOIN game g ON os.game_id = g.game_id "
+			              + "JOIN owner_score os2 ON g.game_id = os2.game_id AND os2.owner_id != ? "
+			              + "WHERE os.owner_id = ? AND type = 1 AND SEASON = ?";
 		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, one.getOwnerId(), two.getOwnerId());
-		
-		if (results.next()) {
-			numOfWins = results.getInt("count");
-		}
-		return numOfWins;
-	}
-	
-	public int getNumberOfWinsVsSelectedOwnerPostSeason(Owner one, Owner two) {
-		int numOfWins = 0;
-		String sql = "select count(*) "
-				+ "from owner_score a "
-				+ "join owner_score b on a.game_id = b.game_id "
-				+ "join game on game.game_id = a.game_id "
-				+ "where a.owner_id = ? and b.owner_id = ? and a.score > b.score and type != 1";
-		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, one.getOwnerId(), two.getOwnerId());
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, owner.getOwnerId(), owner.getOwnerId(), season);
 		
 		if (results.next()) {
-			numOfWins = results.getInt("count");
-		}
-		return numOfWins;
-	}
-	
-	public double getTotalScoreVsSelectedOwnerRegularSeason(Owner one, Owner two) {
-		double totalScore = 0;
-		String sql = "select sum(score) "
-				+ "from owner_score "
-				+ "join game on game.game_id = owner_score.game_id "
-				+ "where owner_id = ? and opponent_id = ? and type = 1";
-		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, one.getOwnerId(), two.getOwnerId());
-		
-		if (results.next()) {
-			totalScore += results.getDouble("sum");
+			record.setRegWins(results.getInt("wins"));
+			record.setRegLosses(results.getInt("losses"));
+			record.setRegTies(results.getInt("ties"));
 		}
 		
-		return totalScore;
-	}
-	
-	public double getTotalScoreVsSelectedOwnerPostSeason(Owner one, Owner two) {
-		double totalScore = 0;
-		String sql = "select sum(score) "
-				+ "from owner_score "
-				+ "join game on game.game_id = owner_score.game_id "
-				+ "where owner_id = ? and opponent_id = ? and type != 1";
-		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, one.getOwnerId(), two.getOwnerId());
-		
-		if (results.next()) {
-			totalScore += results.getDouble("sum");
-		}
-		
-		return totalScore;
+		return record;
 	}
 }

@@ -125,6 +125,12 @@ public class LeagueDataAccessCLI {
 				System.out.printf("%-20s %-10.2f\n", "Points Against: ", (regScoreAgainst + postScoreAgainst));
 				System.out.printf("%-20s %-10.2f\n", "Points Per Game: ", avgPointsPerGame);
 				
+				OwnerStats test = statsDao.getRecordForOneOwnerOneSeason(selectedOwner, 2011);
+				System.out.println();
+				System.out.println(test.getRegWins());
+				System.out.println(test.getRegLosses());
+				System.out.println(test.getRegTies());
+				
 				stayInOwnerMenu = false;
 
 			} else if (choice.equals(COMPARE_TO_ANOTHER_OWNER)) {
