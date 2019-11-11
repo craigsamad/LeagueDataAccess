@@ -50,6 +50,7 @@ public class JDBCOwnerDAO implements OwnerDAO {
 		return ownerList;
 	}
 	
+	//move to season DAO?
 	public List<Integer> getAllSeasons() {
 		List<Integer> seasonList = new LinkedList<Integer>();
 		String sql = "SELECT DISTINCT season " 
