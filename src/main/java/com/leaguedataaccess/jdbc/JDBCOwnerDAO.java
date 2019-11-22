@@ -6,9 +6,11 @@ import java.util.List;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 
 import com.leaguedataaccess.model.Owner;
 
+@Component
 public class JDBCOwnerDAO implements OwnerDAO {
 
 	private JdbcTemplate jdbcTemplate;

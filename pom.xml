@@ -3,7 +3,10 @@
   <groupId>com.steelersrbad</groupId>
   <artifactId>leaguedataaccess</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
+  <packaging>war</packaging>
+  <properties>
+    	<failOnMissingWebXml>false</failOnMissingWebXml>
+    </properties>
   <dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>

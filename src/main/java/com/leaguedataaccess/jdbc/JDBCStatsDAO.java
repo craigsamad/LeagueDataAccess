@@ -3,10 +3,12 @@ package com.leaguedataaccess.jdbc;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 
 import com.leaguedataaccess.model.Owner;
 import com.leaguedataaccess.model.OwnerStats;
 
+@Component
 public class JDBCStatsDAO implements StatsDAO {
 
 private JdbcTemplate jdbcTemplate;

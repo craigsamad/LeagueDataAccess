@@ -26,7 +26,7 @@ public class LeagueDataAccessController {
 		this.statsDAO = statsDAO;
 	}
 	
-	@GetMapping(path="/owners", produces="application/json")
+	@GetMapping("/owners")
 	public List<Owner> getListOfAllOwners() {
 		return ownerDAO.getAllOwners();
 	}
