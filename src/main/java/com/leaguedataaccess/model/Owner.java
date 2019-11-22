@@ -1,4 +1,4 @@
-package com.leaguedataaccess;
+package com.leaguedataaccess.model;
 
 public class Owner {
 	

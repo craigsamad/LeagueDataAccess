@@ -5,6 +5,10 @@ import java.util.List;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import com.leaguedataaccess.jdbc.JDBCStatsDAO;
+import com.leaguedataaccess.jdbc.OwnerDAO;
+import com.leaguedataaccess.jdbc.StatsDAO;
+import com.leaguedataaccess.model.Owner;
+import com.leaguedataaccess.model.OwnerStats;
 import com.leaguedataaccess.jdbc.JDBCOwnerDAO;
 import com.leaguedataaccess.view.Menu;
 
@@ -24,7 +28,7 @@ public class LeagueDataAccessCLI {
 
 	private Menu menu;
 	private OwnerDAO ownerDAO;
-	private StatsDAO statsDao;
+	private StatsDAO statsDAO;
 	
 	public LeagueDataAccessCLI() {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -34,7 +38,7 @@ public class LeagueDataAccessCLI {
 
 		this.menu = new Menu(System.in, System.out);
 		ownerDAO = new JDBCOwnerDAO(dataSource);
-		statsDao = new JDBCStatsDAO(dataSource);
+		statsDAO = new JDBCStatsDAO(dataSource);
 	}
 
 	public static void main(String[] args) {
@@ -66,7 +70,7 @@ public class LeagueDataAccessCLI {
 	private void handleSeasonSelection(int selectedSeason) {
 		List<Owner> allOwners = ownerDAO.getOwnersBySeason(selectedSeason);
 		for (Owner owner : allOwners) {
-			OwnerStats stats = statsDao.getRegSeasonRecordForOneOwnerOneSeason(owner, selectedSeason);
+			OwnerStats stats = statsDAO.getRegSeasonRecordForOneOwnerOneSeason(owner, selectedSeason);
 			System.out.println(owner.getFullName() + ": " + stats.getRegWins() + "-" + stats.getRegLosses());
 		}
 	}
@@ -103,7 +107,7 @@ public class LeagueDataAccessCLI {
 			Object choice = menu.getChoiceFromOptions(OWNER_MENU);
 			if (choice.equals(OWNER_MENU_SHOW_TOTAL_STATS)) {
 				
-				OwnerStats totalOwnerStats = statsDao.getTotalStatsForOneOwner(selectedOwner);
+				OwnerStats totalOwnerStats = statsDAO.getTotalStatsForOneOwner(selectedOwner);
 				
 				System.out.println();
 				System.out.println("Total Stats For " + selectedOwner.getFirstName() + ":");
@@ -155,7 +159,7 @@ public class LeagueDataAccessCLI {
 
 				choice = menu.getChoiceFromOptions(ownerListTwo);
 				
-				OwnerStats headToHeadResults = statsDao.getHeadToHeadStats(selectedOwner, (Owner) choice);
+				OwnerStats headToHeadResults = statsDAO.getHeadToHeadStats(selectedOwner, (Owner) choice);
 				
 				System.out.printf("%-20s %-10s %s\n", "", selectedOwner.getFirstName(), ((Owner) choice).getFirstName());
 				System.out.println("Regular Season Stats");

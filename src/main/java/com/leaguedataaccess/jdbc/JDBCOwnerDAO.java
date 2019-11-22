@@ -7,8 +7,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import com.leaguedataaccess.Owner;
-import com.leaguedataaccess.OwnerDAO;
+import com.leaguedataaccess.model.Owner;
 
 public class JDBCOwnerDAO implements OwnerDAO {
 

@@ -1,6 +1,8 @@
-package com.leaguedataaccess;
+package com.leaguedataaccess.jdbc;
 
 import java.util.List;
+
+import com.leaguedataaccess.model.Owner;
 
 public interface OwnerDAO {
 	

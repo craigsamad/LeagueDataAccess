@@ -4,9 +4,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import com.leaguedataaccess.StatsDAO;
-import com.leaguedataaccess.OwnerStats;
-import com.leaguedataaccess.Owner;
+import com.leaguedataaccess.model.Owner;
+import com.leaguedataaccess.model.OwnerStats;
 
 public class JDBCStatsDAO implements StatsDAO {
 

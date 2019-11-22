@@ -1,4 +1,7 @@
-package com.leaguedataaccess;
+package com.leaguedataaccess.jdbc;
+
+import com.leaguedataaccess.model.Owner;
+import com.leaguedataaccess.model.OwnerStats;
 
 public interface StatsDAO {
 
