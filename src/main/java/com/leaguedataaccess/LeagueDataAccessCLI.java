@@ -19,6 +19,7 @@ public class LeagueDataAccessCLI {
 	private static final String MAIN_MENU_OPTION_EXIT = "Quit";
 	private static final String[] MAIN_MENU = {MAIN_MENU_START_SEARCH_BY_OWNER, MAIN_MENU_START_SEARCH_BY_SEASON, MAIN_MENU_OPTION_EXIT};
 
+	@SuppressWarnings("unused")
 	private static final String MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN = "Return to previous screen";
 	private static final String MENU_OPTION_RETURN_TO_MAIN = "Return to main menu";
 	

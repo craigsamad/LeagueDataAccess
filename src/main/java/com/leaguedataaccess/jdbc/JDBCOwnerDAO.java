@@ -35,6 +35,21 @@ public class JDBCOwnerDAO implements OwnerDAO {
 		return listOfAllOwners;
 	}
 	
+	public Owner getOwnerById(int id) {
+		Owner owner = new Owner();
+		String sql = "select owner_id, first_name, last_name "
+				+ "from owner "
+				+ "where owner_id = ?";
+		
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id); 
+		
+		while(results.next()) {
+			owner = mapRowsToOwner(results);
+		}
+		
+		return owner;
+	}
+	
 	public List<Owner> getOwnersBySeason(int season) {
 		List<Owner> ownerList = new LinkedList<Owner>();
 		String sql = "SELECT o.owner_id, o.first_name, o.last_name FROM owner o "

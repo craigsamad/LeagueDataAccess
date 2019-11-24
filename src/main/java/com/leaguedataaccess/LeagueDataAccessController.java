@@ -5,12 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.leaguedataaccess.jdbc.OwnerDAO;
 import com.leaguedataaccess.jdbc.StatsDAO;
 import com.leaguedataaccess.model.Owner;
+import com.leaguedataaccess.model.OwnerStats;
 
 @RestController
 @CrossOrigin
@@ -29,5 +31,12 @@ public class LeagueDataAccessController {
 	@GetMapping("/owners")
 	public List<Owner> getListOfAllOwners() {
 		return ownerDAO.getAllOwners();
+	}
+	
+	@GetMapping("/stats/{id}")
+	public OwnerStats getOwnerStats(@PathVariable int id) {
+		Owner owner = ownerDAO.getOwnerById(id);
+		OwnerStats stats = statsDAO.getTotalStatsForOneOwner(owner);
+		return stats;
 	}
 }
