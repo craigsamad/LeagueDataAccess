@@ -1,6 +1,6 @@
 package com.leaguedataaccess.model;
 
-public class OwnerStats {
+public class OwnerStats extends Owner{
 
 	private int regWins;
 	private int regLosses;

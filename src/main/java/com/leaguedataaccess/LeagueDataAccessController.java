@@ -1,5 +1,6 @@
 package com.leaguedataaccess;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,15 @@ public class LeagueDataAccessController {
 		Owner owner = ownerDAO.getOwnerById(id);
 		OwnerStats stats = statsDAO.getTotalStatsForOneOwner(owner);
 		return stats;
+	}
+	
+	@GetMapping("/totalstats")
+	public List<OwnerStats> getAllOwnerStats() {
+		List<Owner> listOfAllOwners = ownerDAO.getAllOwners();
+		List<OwnerStats> listOfAllOwnerStats = new LinkedList<OwnerStats>();
+		for (Owner owner : listOfAllOwners) {
+			listOfAllOwnerStats.add(statsDAO.getTotalStatsForOneOwner(owner));
+		}
+		return listOfAllOwnerStats;
 	}
 }

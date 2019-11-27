@@ -54,7 +54,9 @@ private JdbcTemplate jdbcTemplate;
 	public OwnerStats getTotalStatsForOneOwner(Owner one) {
 		OwnerStats stats = new OwnerStats();
 
-		String sql = "SELECT os.score AS owner_one_score, g.type, os2.owner_id, os2.score AS owner_two_score, "
+		String sql = "SELECT (SELECT owner_id from owner where owner_id = ?) as owner_id, "
+					+ "(SELECT first_name from owner where owner_id = ?) as first_name, " 
+					+ "(SELECT last_name from owner where owner_id = ?) as last_name,  os.score AS owner_one_score, g.type, os2.owner_id, os2.score AS owner_two_score, "
 				       + "CASE WHEN os.score > os2.score AND type = 1 THEN 1 ELSE 0 END AS reg_wins, "
 				       + "CASE WHEN os.score < os2.score AND type = 1 THEN 1 ELSE 0 END AS reg_losses, "
 				       + "CASE WHEN os.score = os2.score AND type = 1 THEN 1 ELSE 0 END AS reg_ties, "
@@ -65,9 +67,12 @@ private JdbcTemplate jdbcTemplate;
 					+ "JOIN owner_score os2 ON g.game_id = os2.game_id AND os2.owner_id != ? "
 					+ "WHERE os.owner_id = ?";
 		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, one.getOwnerId(), one.getOwnerId());
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, one.getOwnerId(), one.getOwnerId(), one.getOwnerId(), one.getOwnerId(), one.getOwnerId());
 		
 		while (results.next()) {
+			stats.setOwnerId(results.getInt("owner_id"));
+			stats.setFirstName(results.getString("first_name"));
+			stats.setLastName(results.getString("last_name"));
 			if (results.getInt("type") == 1) {
 				stats.setRegScoreFor(results.getDouble("owner_one_score"));
 				stats.setRegScoreAgainst(results.getDouble("owner_two_score"));
