@@ -50,4 +50,11 @@ public class LeagueDataAccessController {
 		}
 		return listOfAllOwnerStats;
 	}
+	
+	@GetMapping(path="/h2hstats/{idOne}/{idTwo}")
+	public OwnerStats getHeadToHeadStats(@PathVariable int idOne,@PathVariable int idTwo) {
+		Owner one = ownerDAO.getOwnerById(idOne);
+		Owner two = ownerDAO.getOwnerById(idTwo);
+		return statsDAO.getHeadToHeadStats(one, two);
+	}
 }
