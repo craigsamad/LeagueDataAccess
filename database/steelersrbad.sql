@@ -1,6 +1,22 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS board_posts;
 DROP TABLE IF EXISTS owner_score;
 DROP TABLE IF EXISTS game;
 DROP TABLE IF EXISTS owner;
+
+CREATE TABLE users (
+  id serial PRIMARY KEY,
+  username varchar(255) NOT NULL UNIQUE,
+  password varchar(32) NOT NULL,
+  salt varchar(256) NOT NULL,
+  role varchar(255) NOT NULL default('user')
+);
+
+CREATE TABLE board_posts (
+  id serial,
+  poster varchar(40) NOT NULL,
+  post_text varchar(256) NOT NULL
+);
 
 CREATE TABLE owner (
 	owner_id serial,
@@ -2434,5 +2450,14 @@ INSERT INTO owner_score (game_id,owner_id,score) VALUES (805,21,142.5);
 INSERT INTO owner_score (game_id,owner_id,score) VALUES (805,5,74.04);
 INSERT INTO owner_score (game_id,owner_id,score) VALUES (806,20,77.54);
 INSERT INTO owner_score (game_id,owner_id,score) VALUES (806,13,69.66);
+
+-- Password for this user is 'greatwall'
+INSERT INTO users ("username", "password", "salt", "role") VALUES
+('csamad',
+'FjZDm+sndmsdEDwNtfr6NA==',
+'kidcasB0te7i0jK0fmRIGHSm0mYhdLTaiGkEAiEvLp7dAEHWnuT8n/5bd2V/mqjstQ198iImm1xCmEFu+BHyOz1Mf7vm4LILcrr17y7Ws40Xyx4FOCt8jD03G+jEafpuVJnPiDmaZQXJEpEfekGOvhKGOCtBnT5uatjKEuVWuDA=',
+'admin');
+
+INSERT INTO board_posts (poster, post_text) VALUES ('Craig', 'This is a test');
 
 ALTER TABLE owner_score ADD FOREIGN KEY (game_id) REFERENCES game(game_id);
