@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -96,5 +97,12 @@ public class LeagueDataAccessController {
 	public void deletePost(@PathVariable int id) {
 		MessageBoardPost requestedPost = messageBoardDAO.getPostById(id);
 		messageBoardDAO.deletePost(id);
+	}
+	
+	@PutMapping("/boardposts/{id}")
+	public MessageBoardPost putPost(@PathVariable int id, @RequestBody MessageBoardPost updatedPost) {
+		MessageBoardPost requestedReview = messageBoardDAO.getPostById(id);
+		updatedPost.setPostId(id);
+		return messageBoardDAO.updatePost(updatedPost);
 	}
 }

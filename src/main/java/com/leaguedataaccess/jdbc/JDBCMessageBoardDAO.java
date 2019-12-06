@@ -22,7 +22,8 @@ public class JDBCMessageBoardDAO implements MessageBoardDAO {
 	public List<MessageBoardPost> getAllPosts() {
 		List<MessageBoardPost> listOfPosts = new LinkedList<MessageBoardPost>();
 		String sql = "select id, poster, post_text "
-				+ "from board_posts";
+				+ "from board_posts "
+				+ "order by id";
 		
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql); 
 		
@@ -66,6 +67,17 @@ public class JDBCMessageBoardDAO implements MessageBoardDAO {
 		String sql = "DELETE FROM board_posts WHERE id = ?";
 		
 		jdbcTemplate.update(sql, id);
+	}
+	
+	
+	public MessageBoardPost updatePost(MessageBoardPost post) {
+		String sql = "UPDATE board_posts " + 
+				"SET post_text = ? " + 
+				"WHERE id = ?";
+		
+		jdbcTemplate.update(sql, post.getPostText(),post.getPostId());
+		
+		return post;
 	}
 
 }

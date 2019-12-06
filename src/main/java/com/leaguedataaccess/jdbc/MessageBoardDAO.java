@@ -10,4 +10,5 @@ public interface MessageBoardDAO {
 	public MessageBoardPost createNewPost(MessageBoardPost post);
 	public MessageBoardPost getPostById(int id);
 	public void deletePost(int id);
+	public MessageBoardPost updatePost(MessageBoardPost post);
 }
