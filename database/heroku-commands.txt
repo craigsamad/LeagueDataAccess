@@ -1,0 +1,10 @@
+install heroku cli
+
+heroku create unique-name
+heroku addons:create heroku-postgresql -a unique-name
+heroku pg:push postgres://postgres:postgres1@localhost/dbname postgres-db-name -a unique-name
+
+(add plugin to pom.xml)
+mvn heroku:deploy-war
+
+npm run build - creates dist directory, drag that into netlify
